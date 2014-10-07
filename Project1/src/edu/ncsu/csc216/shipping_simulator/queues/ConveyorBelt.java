@@ -29,6 +29,11 @@ public class ConveyorBelt implements LineOfItems {
 	 */
 	private ShipmentProcessStation[] station;
 	
+	/**
+	 * The item (book package) being created and added to the conveyor belt
+	 */
+	private ItemToShip item;
+	
 	
 	/**
 	 * The constructor for the ConveyorBelt class
@@ -36,7 +41,12 @@ public class ConveyorBelt implements LineOfItems {
 	 * @param ShipmentProcessStation[] The array of shipment process stations for the packages
 	 */
 	public ConveyorBelt(int numShipments, ShipmentProcessStation[] station) {
-		ItemToShip item = BookShipmentFactory.generateBookShipment();
+		if (numShipments > 0) {
+			ItemToShip item = BookShipmentFactory.generateBookShipment();
+		}
+		else {
+			throw new IllegalArgumentException();
+		}
 		if (queueFromFactory != null) {
 			try {
 				queueFromFactory.add(item);
@@ -72,7 +82,7 @@ public class ConveyorBelt implements LineOfItems {
 	 * getInLine message
 	 */
 	public ItemToShip processNext() {
-		if (hasNext()==true) {
+		if (!hasNext()) {
 				return queueFromFactory.remove();
 		}
 		else {
@@ -87,7 +97,7 @@ public class ConveyorBelt implements LineOfItems {
 	 * @return the depart time of the item at the front of the conveyor belt 
 	 */
 	public int departTimeNext() {
-		if(hasNext()==false) {
+		if(hasNext()) {
 			return Integer.MAX_VALUE;
 		}
 		else {

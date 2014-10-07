@@ -4,6 +4,7 @@ import java.awt.Color;
 
 import edu.ncsu.csc216.shipping_simulator.pkg.ItemToShip;
 import edu.ncsu.csc216.shipping_simulator.queues.ConveyorBelt;
+import edu.ncsu.csc216.shipping_simulator.queues.LineOfItems;
 import edu.ncsu.csc216.shipping_simulator.queues.ShipmentProcessStation;
 
 /**
@@ -69,6 +70,11 @@ public class Simulator {
 	private ItemToShip currentShipment;
 	
 	/**
+	 * A reference to LineOfItems so the step method can return the next step in the simulation
+	 */
+	private LineOfItems chosenItem;
+	
+	/**
 	 * The constructor for the Simulator class. Uses the parameters to create a
 	 * ConveyorBelt and an array of ShipmentProcessStations. It also creates the Log
 	 * to keep track of shipping statistics and an event calendar to control the order of events.
@@ -76,11 +82,16 @@ public class Simulator {
 	 * @param numStations the number of shipment process stations in the simulation
 	 */
 	public Simulator(int numShipments, int numStations) {
-		ConveyorBelt theBelt = new ConveyorBelt(numShipments, station);
-		ShipmentProcessStation[] station = new ShipmentProcessStation[numStations];
-		EventCalendar myCalendar = new EventCalendar(station, theBelt);
-		Log myLog = new Log();
-		if (numShipments < 1 ||  numStations < MIN_NUM_STATIONS || numStations > MAX_NUM_STATIONS) {
+		if (numShipments > 0 && numStations >= MIN_NUM_STATIONS && numStations <= MAX_NUM_STATIONS) {
+			myLog = new Log();
+			theBelt = new ConveyorBelt(numShipments, station);
+			myCalendar = new EventCalendar(station, theBelt);
+			station = new ShipmentProcessStation[numStations];
+				for (int i = 0; i < station.length; i++) {
+					station[i] = new ShipmentProcessStation(myLog);
+				}
+		}
+		else {
 			throw new IllegalArgumentException();
 		}
 	}
@@ -97,8 +108,8 @@ public class Simulator {
 	 */
 	public void step() {
 		currentShipment = null;
-		myCalendar.nextToBeProcessed();
-		currentShipment = theBelt.processNext();
+		chosenItem = myCalendar.nextToBeProcessed();
+		currentShipment = chosenItem.processNext();
 		stepsTaken++;
 	}
 	
@@ -124,18 +135,13 @@ public class Simulator {
 	 * @return whether or not the simulation has finished
 	 */
 	public boolean moreSteps() {
-		if(stepsTaken == totalNumberOfSteps()) {
-			return false;
-		}
-		else {
-			return true;
-		}
+		return !(stepsTaken == totalNumberOfSteps());
 	}
 	
 	/**
 	 * Returns the index of the ShipmentProcessStation selected by the
 	 * currentShipent, or -1 if currentShipment is null.
-	 * @return
+	 * @return the station index of the current shipment
 	 */
 	public int getCurrentIndex() {
 		if (currentShipment == null) {
@@ -170,12 +176,7 @@ public class Simulator {
 		if (currentShipment == null) {
 			return false;
 		}
-		if (currentShipment.isWaitingInLineAtStation() == true) {
-			return false;
-		}
-		else {
-			return true;
-		}
+		return !(currentShipment.isWaitingInLineAtStation() == true);
 	}
 	
 	/**

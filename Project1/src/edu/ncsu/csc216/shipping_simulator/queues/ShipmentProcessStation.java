@@ -4,6 +4,7 @@ import java.util.NoSuchElementException;
 
 import edu.ncsu.csc216.shipping_simulator.pkg.ItemToShip;
 import edu.ncsu.csc216.shipping_simulator.simulation.Log;
+import edu.ncsu.csc216.shipping_simulator.simulation.Simulator;
 
 /**
  * Represents stations where items (book packages) go through their
@@ -54,7 +55,8 @@ public class ShipmentProcessStation implements LineOfItems {
 	public ItemToShip processNext() {
 		if (line.isEmpty()) {
 			throw new NoSuchElementException();
-		}	
+		}
+		log.logItem(line.front());
 		return line.remove();
 	}
 	
@@ -93,9 +95,10 @@ public class ShipmentProcessStation implements LineOfItems {
 			item.setWaitTime(0);
 		}
 		if (line.front() != null) {
-			item.setWaitTime(timeWhenAvailable-item.getArrivalTime());
+			item.setWaitTime(timeWhenAvailable - item.getArrivalTime());
 		}
 		timeWhenAvailable = timeWhenAvailable + item.getProcessTime();
+		log.logItem(item);
 		line.add(item);
 	}
 }
