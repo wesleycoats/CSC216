@@ -5,20 +5,37 @@ package edu.ncsu.csc216.shipping_simulator.pkg;
 
 import static org.junit.Assert.*;
 
+import java.awt.Color;
+
 import org.junit.Before;
 import org.junit.Test;
+
+import edu.ncsu.csc216.shipping_simulator.queues.ShipmentProcessStation;
+import edu.ncsu.csc216.shipping_simulator.simulation.Log;
 
 /**
  * @author Wesley
  *
  */
 public class RushBookShipmentTest {
+	
+	private ItemToShip bookpack3;
+	
+	private ShipmentProcessStation[] station;
+	
+	private Log log;
 
 	/**
 	 * @throws java.lang.Exception
 	 */
 	@Before
 	public void setUp() throws Exception {
+		log = new Log();
+		bookpack3 = new RushBookShipment(1, 10);
+		station = new ShipmentProcessStation[3];
+			for (int i = 0; i < station.length; i++) {
+				station[i] = new ShipmentProcessStation(log);
+			}
 	}
 
 	/**
@@ -26,7 +43,9 @@ public class RushBookShipmentTest {
 	 */
 	@Test
 	public void testGetInLine() {
-		fail("Not yet implemented");
+		bookpack3.getInLine(station);
+		assertEquals(false, bookpack3.isWaitingInLineAtStation());
+		assertEquals(1, bookpack3.getStationIndex());
 	}
 
 	/**
@@ -34,7 +53,7 @@ public class RushBookShipmentTest {
 	 */
 	@Test
 	public void testGetColor() {
-		fail("Not yet implemented");
+		assertEquals(Color.black, bookpack3.getColor());
 	}
 
 	/**
@@ -58,7 +77,7 @@ public class RushBookShipmentTest {
 	 */
 	@Test
 	public void testGetArrivalTime() {
-		fail("Not yet implemented");
+		assertEquals(0, bookpack3.getArrivalTime());
 	}
 
 	/**
@@ -66,7 +85,7 @@ public class RushBookShipmentTest {
 	 */
 	@Test
 	public void testGetWaitTime() {
-		fail("Not yet implemented");
+		assertEquals(0, bookpack3.getWaitTime());
 	}
 
 	/**
@@ -74,7 +93,8 @@ public class RushBookShipmentTest {
 	 */
 	@Test
 	public void testSetWaitTime() {
-		fail("Not yet implemented");
+		bookpack3.setWaitTime(30);
+		assertEquals(30, bookpack3.getWaitTime());
 	}
 
 	/**
@@ -82,7 +102,7 @@ public class RushBookShipmentTest {
 	 */
 	@Test
 	public void testGetProcessTime() {
-		fail("Not yet implemented");
+		assertEquals(10, bookpack3.getProcessTime());
 	}
 
 	/**
@@ -90,7 +110,7 @@ public class RushBookShipmentTest {
 	 */
 	@Test
 	public void testGetStationIndex() {
-		fail("Not yet implemented");
+		assertEquals(0, bookpack3.getStationIndex());
 	}
 
 	/**
@@ -98,7 +118,7 @@ public class RushBookShipmentTest {
 	 */
 	@Test
 	public void testIsWaitingInLineAtStation() {
-		fail("Not yet implemented");
+		assertFalse(bookpack3.isWaitingInLineAtStation());
 	}
 
 	/**
@@ -106,7 +126,8 @@ public class RushBookShipmentTest {
 	 */
 	@Test
 	public void testRemoveFromWaitingLine() {
-		fail("Not yet implemented");
+		bookpack3.removeFromWaitingLine();
+		assertFalse(bookpack3.isWaitingInLineAtStation());
 	}
 
 	/**
@@ -114,7 +135,8 @@ public class RushBookShipmentTest {
 	 */
 	@Test
 	public void testSetStationIndex() {
-		fail("Not yet implemented");
+		bookpack3.setStationIndex(3);
+		assertEquals(3, bookpack3.getStationIndex());
 	}
 
 }

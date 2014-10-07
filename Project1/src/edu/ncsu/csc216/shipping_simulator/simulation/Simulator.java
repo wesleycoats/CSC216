@@ -81,7 +81,7 @@ public class Simulator {
 	 * @param numShipments the number of items (book packages) in the simulation
 	 * @param numStations the number of shipment process stations in the simulation
 	 */
-	public Simulator(int numShipments, int numStations) {
+	public Simulator(int numStations, int numShipments) {
 		if (numShipments > 0 && numStations >= MIN_NUM_STATIONS && numStations <= MAX_NUM_STATIONS) {
 			myLog = new Log();
 			theBelt = new ConveyorBelt(numShipments, station);
@@ -91,16 +91,9 @@ public class Simulator {
 					station[i] = new ShipmentProcessStation(myLog);
 				}
 		}
-		else {
+		else if (numShipments < 0 || numStations < MIN_NUM_STATIONS || numStations > MAX_NUM_STATIONS) {
 			throw new IllegalArgumentException();
 		}
-	}
-	
-	/**
-	 * Does preliminary work by setting up stuff for the simulation
-	 */
-	private void setUp() {
-		
 	}
 	
 	/**
