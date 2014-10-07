@@ -18,12 +18,12 @@ public class Simulator {
 	/**
 	 * The minimum number of stations in the simulation
 	 */
-	private static final int MIN_NUM_STATIONS;
+	private static final int MIN_NUM_STATIONS =3;
 	
 	/**
 	 * The maximum number of stations in the simulation
 	 */
-	private static final int MAX_NUM_STATIONS;
+	private static final int MAX_NUM_STATIONS = 9;
 	
 	/**
 	 * The number of shipment process stations
@@ -76,12 +76,13 @@ public class Simulator {
 	 * @param numStations the number of shipment process stations in the simulation
 	 */
 	public Simulator(int numShipments, int numStations) {
-		if (numShipments < 1 ||  numStations < 3 || numStations > 9) {
-			throw new IllegalArgumentException();
-		}
-		Simulator simulator = new Simulator(numShipments, numStations);
+		ConveyorBelt theBelt = new ConveyorBelt(numShipments, station);
+		ShipmentProcessStation[] station = new ShipmentProcessStation[numStations];
 		EventCalendar myCalendar = new EventCalendar(station, theBelt);
 		Log myLog = new Log();
+		if (numShipments < 1 ||  numStations < MIN_NUM_STATIONS || numStations > MAX_NUM_STATIONS) {
+			throw new IllegalArgumentException();
+		}
 	}
 	
 	/**
@@ -182,14 +183,13 @@ public class Simulator {
 	 * @return the average wait time for the packages
 	 */
 	public double averageWaitTime() {
-		return myLog.averageWaitTime() / myLog.getNumCompleted();
+		return myLog.averageWaitTime();
 	}
-	
 	/**
 	 * Returns the average process time of the packages in the simulation
 	 * @return the average process time for the packages
 	 */
 	public double averageProcessTime() {
-		return myLog.averageProcessTime() / myLog.getNumCompleted();
-	}
+		return myLog.averageProcessTime();
+	}	
 }

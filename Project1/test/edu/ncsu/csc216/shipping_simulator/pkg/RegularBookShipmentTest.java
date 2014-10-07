@@ -5,6 +5,8 @@ package edu.ncsu.csc216.shipping_simulator.pkg;
 
 import static org.junit.Assert.*;
 
+import java.awt.Color;
+
 import org.junit.Before;
 import org.junit.Test;
 
@@ -15,14 +17,17 @@ import edu.ncsu.csc216.shipping_simulator.queues.ShipmentProcessStation;
  *
  */
 public class RegularBookShipmentTest {
+	
+	private ItemToShip bookpack1;
+	
+	private ShipmentProcessStation[] station;
 
 	/**
 	 * @throws java.lang.Exception
 	 */
 	@Before
 	public void setUp() throws Exception {
-		ItemToShip bookpack1 = BookShipmentFactory.generateBookShipment();
-		ItemToShip bookpack2 = BookShipmentFactory.generateBookShipment();
+		ItemToShip bookpack1 = new RegularBookShipment(1, 10);
 		ShipmentProcessStation[] station = new ShipmentProcessStation[3];
 	}
 
@@ -31,9 +36,10 @@ public class RegularBookShipmentTest {
 	 */
 	@Test
 	public void testGetInLine() {
-		bookpack2.RegularBookShipment.getInLine();
-		
-		fail("Not yet implemented");
+		bookpack1.getInLine(station);
+		assertEquals(false, bookpack1.isWaitingInLineAtStation());
+		assertEquals(1, bookpack1.getStationIndex());
+		//fail("Not yet implemented");
 	}
 
 	/**
@@ -41,7 +47,7 @@ public class RegularBookShipmentTest {
 	 */
 	@Test
 	public void testGetColor() {
-		assertEquals(blue, regularPackage.getColor());
+		assertEquals(Color.blue, bookpack1.getColor());
 	}
 
 	/**
@@ -49,7 +55,7 @@ public class RegularBookShipmentTest {
 	 */
 	@Test
 	public void testRegularBookShipment() {
-		assertTrue
+		
 		fail("Not yet implemented");
 	}
 
@@ -66,7 +72,8 @@ public class RegularBookShipmentTest {
 	 */
 	@Test
 	public void testGetArrivalTime() {
-		fail("Not yet implemented");
+		assertEquals(1, bookpack1.getArrivalTime());
+		//fail("Not yet implemented");
 	}
 
 	/**
@@ -74,7 +81,8 @@ public class RegularBookShipmentTest {
 	 */
 	@Test
 	public void testGetWaitTime() {
-		fail("Not yet implemented");
+		assertEquals(0, bookpack1.getWaitTime());
+		//fail("Not yet implemented");
 	}
 
 	/**
@@ -82,7 +90,9 @@ public class RegularBookShipmentTest {
 	 */
 	@Test
 	public void testSetWaitTime() {
-		fail("Not yet implemented");
+		bookpack1.setWaitTime(30);
+		assertEquals(30, bookpack1.getWaitTime());
+		//fail("Not yet implemented");
 	}
 
 	/**
@@ -90,7 +100,8 @@ public class RegularBookShipmentTest {
 	 */
 	@Test
 	public void testGetProcessTime() {
-		fail("Not yet implemented");
+		assertEquals(10, bookpack1.getProcessTime());
+		//fail("Not yet implemented");
 	}
 
 	/**
@@ -98,7 +109,8 @@ public class RegularBookShipmentTest {
 	 */
 	@Test
 	public void testGetStationIndex() {
-		fail("Not yet implemented");
+		assertEquals(1, bookpack1.getStationIndex());
+		//fail("Not yet implemented");
 	}
 
 	/**
@@ -106,7 +118,7 @@ public class RegularBookShipmentTest {
 	 */
 	@Test
 	public void testIsWaitingInLineAtStation() {
-		fail("Not yet implemented");
+		assertFalse(bookpack1.isWaitingInLineAtStation());
 	}
 
 	/**
@@ -114,7 +126,9 @@ public class RegularBookShipmentTest {
 	 */
 	@Test
 	public void testRemoveFromWaitingLine() {
-		fail("Not yet implemented");
+		bookpack1.removeFromWaitingLine();
+		assertFalse(bookpack1.isWaitingInLineAtStation());
+		//fail("Not yet implemented");
 	}
 
 	/**
@@ -122,7 +136,9 @@ public class RegularBookShipmentTest {
 	 */
 	@Test
 	public void testSetStationIndex() {
-		fail("Not yet implemented");
+		bookpack1.setStationIndex(3);
+		assertEquals(3, bookpack1.getStationIndex());
+		//fail("Not yet implemented");
 	}
 
 }

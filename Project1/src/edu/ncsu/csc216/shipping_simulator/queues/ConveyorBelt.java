@@ -5,6 +5,7 @@ package edu.ncsu.csc216.shipping_simulator.queues;
 
 import java.util.NoSuchElementException;
 
+import edu.ncsu.csc216.shipping_simulator.pkg.BookShipmentFactory;
 import edu.ncsu.csc216.shipping_simulator.pkg.ItemToShip;
 
 /**
@@ -34,8 +35,14 @@ public class ConveyorBelt implements LineOfItems {
 	 * @param numShipments the number of items (book packages) for the simulation
 	 * @param ShipmentProcessStation[] The array of shipment process stations for the packages
 	 */
-	public ConveyorBelt(int numShipments, ShipmentProcessStation[]) {
-		queueFromFactory = new ConveyorBelt(numShipments, station);
+	public ConveyorBelt(int numShipments, ShipmentProcessStation[] station) {
+		ItemToShip item = BookShipmentFactory.generateBookShipment();
+		if (queueFromFactory != null) {
+			try {
+				queueFromFactory.add(item);
+			} catch (NoSuchElementException e) {	
+			}
+		}
 	}
 	
 	/**

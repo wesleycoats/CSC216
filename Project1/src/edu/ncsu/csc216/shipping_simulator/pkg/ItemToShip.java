@@ -15,7 +15,7 @@ public abstract class ItemToShip {
 	/**
 	 * The integer that holds the initial station index
 	 */
-	public static final int INITIAL_STATION_IDX;
+	public static final int INITIAL_STATION_IDX = -1;
 	
 	/**
 	 * The arrival time of the package which is the
@@ -56,15 +56,13 @@ public abstract class ItemToShip {
 	 * @param processTime the process time for the package
 	 * @throws IllegalArgumentException if the arrivalTime or processTime is less than 0
 	 */
-	
-	
-	
 	public ItemToShip(int arrvialTime, int processTime) throws IllegalArgumentException {
-		ItemToShip item = BookShipmentFactory.generateBookShipment();
-		if (arrivalTime < 0 || processTime < 0) {
-			throw new IllegalArgumentException();
-		}
-		
+		if (arrivalTime > 0 && processTime > 0) {
+			ItemToShip item = BookShipmentFactory.generateBookShipment();
+		}	
+		//else {
+			//throw new IllegalArgumentException();
+		//}
 	}
 	
 	/**
@@ -104,7 +102,7 @@ public abstract class ItemToShip {
 	 * @return the station index for a package
 	 */
 	public int getStationIndex() {
-		return this.stationIndex;
+		return INITIAL_STATION_IDX;
 	}
 	
 	/**
@@ -138,7 +136,9 @@ public abstract class ItemToShip {
 	 * for the ShipmentProcessStation it chooses to join.
 	 * @param ShipmentProcessStation[] The array of shipment process stations for packages
 	 */
-	public void getInLine(ShipmentProcessStation[]);
+	public void getInLine(ShipmentProcessStation[] station) {
+		this.getInLine(station);
+	}
 	
 	/**
 	 * Returns the color of the packages

@@ -2,6 +2,8 @@ package edu.ncsu.csc216.shipping_simulator.pkg;
 
 import java.awt.Color;
 
+import edu.ncsu.csc216.shipping_simulator.queues.ShipmentProcessStation;
+
 /**
  * Implements the behavior for joining a shipment process station intended
  * for international packages
@@ -29,34 +31,35 @@ public class InternationalBookShipment extends ItemToShip {
 	 * that it chooses to join.
 	 * @param ShipmentProcessStation[] The array of shipment process stations for the packages
 	 */
-	public void getInLine(ShipmentProcessStation[]) {
+	public void getInLine(ShipmentProcessStation[] station) {
 		//You need to do three things:
 		//Determine the index of the processing station that the item should choose.
 		//Set the station index (setStationIndex)
 		//Add the item to that processing station's line (addItemToLine).
 		int bestStation = 0;
+		int bestStationLength = 0;
 		if (station.length == 3 || station.length == 4) {
 			bestStation = station.length-1;
 		}
-		if (5 <= station.length <= 8) {
+		else if (5 <= station.length && station.length <= 8) {
+			bestStationLength = station[5].size();
 			for (int i = station.length-2; i < station.length; i++) {
-				bestStation = station[i].size();
-				if (station[i].size() < bestStation) {
-					bestStation = station[i].size();
+				if (station[i].size() < bestStationLength) {
+					bestStation = i;
 				}	
 			}
 		}
-		if (station.length == 9) {
+		else if (station.length == 9) {
+			bestStationLength = station[6].size();
 			for (int i = station.length-3; i < station.length; i++) {
-				bestStation = station[i].size();
-				if (station[i].size() < bestStation) {
-					bestStation = station[i].size();
+				if (station[i].size() < bestStationLength) {
+					bestStation = i;
 				}
 			}
 		}	
-		setStationIndex(indexOf(bestStation));
-		addItemToLine(item);
-		waitingProcessing = true;
+		this.setStationIndex(bestStation);
+		station[bestStation].addItemToLine(this);
+		this.removeFromWaitingLine();
 	}
 	
 	/**

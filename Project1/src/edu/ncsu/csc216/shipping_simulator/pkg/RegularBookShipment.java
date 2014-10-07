@@ -2,6 +2,8 @@ package edu.ncsu.csc216.shipping_simulator.pkg;
 
 import java.awt.Color;
 
+import edu.ncsu.csc216.shipping_simulator.queues.ShipmentProcessStation;
+
 /**
  * Implements the behavior for joining a shipment process station intended
  * for regular packages
@@ -29,23 +31,22 @@ public class RegularBookShipment extends ItemToShip {
 	 * that it chooses to join.
 	 * @param ShipmentProcessStation[] The array of shipment process stations for the packages
 	 */
-	public void getInLine(ShipmentProcessStation[]) {
+	public void getInLine(ShipmentProcessStation[] station) {
 		//You need to do three things:
 		//Determine the index of the processing station that the item should choose.
 		//Set the station index (setStationIndex)
 		//Add the item to that processing station's line (addItemToLine).
 		int bestStation = 0;
-		for (int i = 0; i < station.length; i++) {
-			if(station[i] > 0) {
-				bestStation = station[i].size();
-					if (station[i].size() < bestStation) {
-						bestStation = station[i].size();
-					}	
-			}
+		int bestStationLength = 0;
+		bestStationLength = station[1].size();
+		for (int i = 1; i < station.length; i++) {
+				if (station[i].size() < bestStationLength) {
+					bestStation = i;
+				}	
 		}
-		setStationIndex(indexOf(bestStation));
-		addItemToLine(item);
-		waitingProcessing = true;
+		this.setStationIndex(bestStation);
+		station[bestStation].addItemToLine(this);
+		this.removeFromWaitingLine();
 	}
 	
 	/**

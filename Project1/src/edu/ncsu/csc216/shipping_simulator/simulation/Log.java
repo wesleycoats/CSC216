@@ -34,7 +34,9 @@ public class Log {
 	 * Initializes the log object
 	 */
 	public Log() {
-		Log log = new Log();
+		numCompleted = 0;
+		totalWaitTime = 0;
+		totalProcessTime = 0;
 		
 	}
 	
@@ -64,7 +66,10 @@ public class Log {
 	 * @return the average wait time for the packages
 	 */
 	public double averageWaitTime() {
-		return totalWaitTime / numCompleted;
+		if (numCompleted == 0) {
+			return 0;
+		}	
+		return totalWaitTime / numCompleted;	
 	}
 	
 	/**
@@ -72,6 +77,9 @@ public class Log {
 	 * @return the average wait time for the packages
 	 */
 	public double averageProcessTime() {
+		if (numCompleted == 0) {
+			return 0;
+		}	
 		return totalProcessTime / numCompleted;
 	}
 }

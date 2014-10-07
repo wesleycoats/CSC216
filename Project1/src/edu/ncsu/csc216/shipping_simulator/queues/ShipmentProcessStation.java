@@ -29,12 +29,6 @@ public class ShipmentProcessStation implements LineOfItems {
 	 * The item at the front of the line logs its information here during its processing
 	 */
 	private Log log;
-
-	/**
-	 * The wait time of the package updated in addItemToLine;
-	 */
-	private double waitTime;
-	
 	
 	/**
 	 * The constructor for the ShipmentProcessStation class.
@@ -55,28 +49,22 @@ public class ShipmentProcessStation implements LineOfItems {
 	/**
 	 * Removes the front item from the queue and logs its information in the
 	 * process. The removed item is returned.
+	 * @return the removed line
 	 */
 	public ItemToShip processNext() {
-		if (hasNext()==true) {
-				return line.remove();
-		}
-		else {
+		if (line.isEmpty()) {
 			throw new NoSuchElementException();
-		}
+		}	
+		return line.remove();
 	}
-	
 	
 	/**
 	 * Returns true if the queue is not empty.
 	 * Returns false if the queue is empty.
+	 * @return if the queue is empty or not
 	 */
 	public boolean hasNext() {
-		if (line.isEmpty()) {
-			return false;
-		}
-		else {	
-			return true;
-		}
+		return !line.isEmpty();
 	}
 	
 	/**
@@ -86,7 +74,7 @@ public class ShipmentProcessStation implements LineOfItems {
 	 * @return the depart time of the item at the front of the queue
 	 */
 	public int departTimeNext() {
-		if(hasNext()==false) {
+		if(!hasNext()) {
 			return Integer.MAX_VALUE;
 		}
 		else {
@@ -98,16 +86,16 @@ public class ShipmentProcessStation implements LineOfItems {
 	 * Adds an item to the end of the queue, updating the
 	 * item's waitTime as well as the time when the items in the line
 	 * will be clear of all current items
-	 * @param ItemToShip Represents a package that needs to be processed and shipped
+	 * @param item represents a package that needs to be processed and shipped
 	 */
 	public void addItemToLine(ItemToShip item) {
-		if (line == null) {
-			this.waitTime = 0.0;
+		if (line.front() == null) {
+			item.setWaitTime(0);
 		}
-		if (line != null) {
-			this.waitTime = timeWhenAvailable-item.getArrivalTime();
+		if (line.front() != null) {
+			item.setWaitTime(timeWhenAvailable-item.getArrivalTime());
 		}
-		waitTime = timeWhenAvailable + this.waitTime;
+		timeWhenAvailable = timeWhenAvailable + item.getProcessTime();
 		line.add(item);
 	}
 }
