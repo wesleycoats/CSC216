@@ -38,20 +38,21 @@ public class ConveyorBelt implements LineOfItems {
 	/**
 	 * The constructor for the ConveyorBelt class
 	 * @param numShipments the number of items (book packages) for the simulation
-	 * @param ShipmentProcessStation[] The array of shipment process stations for the packages
+	 * @param station The array of shipment process stations for the packages
 	 */
 	public ConveyorBelt(int numShipments, ShipmentProcessStation[] station) {
+		this.station = station;
 		if (numShipments > 0) {
-			ItemToShip item = BookShipmentFactory.generateBookShipment();
-		}
+			for (int i = 0; i < numShipments; i++) {
+				item = BookShipmentFactory.generateBookShipment();
+				try {
+					queueFromFactory.add(item);
+				} catch (NullPointerException e) {
+				}	
+			}
+		}	
 		else {
 			throw new IllegalArgumentException();
-		}
-		if (queueFromFactory != null) {
-			try {
-				queueFromFactory.add(item);
-			} catch (NoSuchElementException e) {	
-			}
 		}
 	}
 	
@@ -69,12 +70,7 @@ public class ConveyorBelt implements LineOfItems {
 	 * Returns false if the queue is empty
 	 */
 	public boolean hasNext() {
-		if (queueFromFactory.isEmpty()) {
-			return false;
-		}
-		else {	
-			return true;
-		}
+		return true;
 	}
 	
 	/**
@@ -97,11 +93,10 @@ public class ConveyorBelt implements LineOfItems {
 	 * @return the depart time of the item at the front of the conveyor belt 
 	 */
 	public int departTimeNext() {
-		if(hasNext()) {
-			return Integer.MAX_VALUE;
-		}
-		else {
-			return queueFromFactory.front().getArrivalTime();
-		}
+			try {
+				return queueFromFactory.front().getArrivalTime();
+			} catch (NullPointerException e) {
+				return Integer.MAX_VALUE;
+			}
 	}
-}
+}	

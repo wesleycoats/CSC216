@@ -8,17 +8,47 @@ import static org.junit.Assert.*;
 import org.junit.Before;
 import org.junit.Test;
 
+import edu.ncsu.csc216.shipping_simulator.pkg.ItemToShip;
+
 /**
  * @author Wesley
  *
  */
 public class LogTest {
+	
+	/**
+	 * The number of items that have logged their information
+	 * and left the simulation
+	 */
+	private int numCompleted;
+	
+	/**
+	 * The sum of all wait times logged by items so far
+	 */
+	private int totalWaitTime;
+	
+	/**
+	 * The sum of all times that items took to do actual processing
+	 * which is not including wait time.
+	 */
+	private int totalProcessTime;
+	
+	/**
+	 * The log object being constructed
+	 */
+	private Log log;
+	
+	/**
+	 * The item being shipped
+	 */
+	private ItemToShip item;
 
 	/**
 	 * @throws java.lang.Exception
 	 */
 	@Before
 	public void setUp() throws Exception {
+		log = new Log();
 	}
 
 	/**
@@ -26,7 +56,9 @@ public class LogTest {
 	 */
 	@Test
 	public void testLog() {
-		fail("Not yet implemented");
+		assertEquals(0, numCompleted);
+		assertEquals(0, totalWaitTime);
+		assertEquals(0, totalProcessTime);
 	}
 
 	/**
@@ -34,7 +66,7 @@ public class LogTest {
 	 */
 	@Test
 	public void testGetNumCompleted() {
-		fail("Not yet implemented");
+		assertEquals(0, log.getNumCompleted());
 	}
 
 	/**
@@ -42,7 +74,8 @@ public class LogTest {
 	 */
 	@Test
 	public void testLogItem() {
-		fail("Not yet implemented");
+		log.logItem(item);
+		assertEquals(1, log.getNumCompleted());
 	}
 
 	/**
@@ -50,7 +83,7 @@ public class LogTest {
 	 */
 	@Test
 	public void testAverageWaitTime() {
-		fail("Not yet implemented");
+		assertEquals(0.0, log.averageWaitTime());
 	}
 
 	/**
@@ -58,7 +91,7 @@ public class LogTest {
 	 */
 	@Test
 	public void testAverageProcessTime() {
-		fail("Not yet implemented");
+		assertEquals(10.0, log.averageProcessTime());
 	}
 
 }

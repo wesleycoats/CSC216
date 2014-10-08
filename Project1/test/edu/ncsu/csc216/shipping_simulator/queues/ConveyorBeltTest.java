@@ -5,20 +5,56 @@ package edu.ncsu.csc216.shipping_simulator.queues;
 
 import static org.junit.Assert.*;
 
+import java.util.NoSuchElementException;
+
 import org.junit.Before;
 import org.junit.Test;
+
+import edu.ncsu.csc216.shipping_simulator.pkg.BookShipmentFactory;
+import edu.ncsu.csc216.shipping_simulator.pkg.ItemToShip;
 
 /**
  * @author Wesley
  *
  */
 public class ConveyorBeltTest {
+	
+	/**
+	 * The queue of items created by the BookShipmentFactory in the ConveyorBelt constructor.
+	 * Items are added to the queue in order of their arrivalTime.
+	 */
+	private ShipmentQueue queueFromFactory;
+	
+	/**
+	 * An array of shipment process stations used by the method processNext.
+	 */
+	private ShipmentProcessStation[] station;
+	
+	/**
+	 * The item (book package) being created and added to the conveyor belt
+	 */
+	private ItemToShip item;
+	
+	/**
+	 * The 2nd book package
+	 */
+	private ItemToShip item2;
+	
+	/**
+	 * The 3rd book package
+	 */
+	private ItemToShip item3;
+	
+	private ConveyorBelt theBelt;
 
 	/**
 	 * @throws java.lang.Exception
 	 */
 	@Before
 	public void setUp() throws Exception {
+			item = BookShipmentFactory.generateBookShipment();
+			item2 = BookShipmentFactory.generateBookShipment();
+			item3 = BookShipmentFactory.generateBookShipment();
 	}
 
 	/**
@@ -26,7 +62,14 @@ public class ConveyorBeltTest {
 	 */
 	@Test
 	public void testConveyorBelt() {
-		fail("Not yet implemented");
+		if (queueFromFactory != null) {
+			try {
+				queueFromFactory.add(item);
+				queueFromFactory.add(item2);
+			} catch (NoSuchElementException e) {
+				assertTrue(!queueFromFactory.isEmpty());
+			}
+		}	
 	}
 
 	/**
@@ -34,7 +77,7 @@ public class ConveyorBeltTest {
 	 */
 	@Test
 	public void testSize() {
-		fail("Not yet implemented");
+		assertEquals(3, queueFromFactory.size());
 	}
 
 	/**
@@ -42,7 +85,7 @@ public class ConveyorBeltTest {
 	 */
 	@Test
 	public void testHasNext() {
-		fail("Not yet implemented");
+		assertEquals(true, theBelt.hasNext());
 	}
 
 	/**
@@ -50,7 +93,7 @@ public class ConveyorBeltTest {
 	 */
 	@Test
 	public void testProcessNext() {
-		fail("Not yet implemented");
+		assertEquals(station[0], theBelt.processNext());
 	}
 
 	/**
@@ -58,7 +101,7 @@ public class ConveyorBeltTest {
 	 */
 	@Test
 	public void testDepartTimeNext() {
-		fail("Not yet implemented");
+		assertEquals(3, theBelt.departTimeNext());
 	}
 
 }

@@ -66,9 +66,11 @@ public class ShipmentProcessStation implements LineOfItems {
 	 * @return if the queue is empty or not
 	 */
 	public boolean hasNext() {
-		return !line.isEmpty();
+		if (line != null) {
+			return true;
+		}	
+		return false;
 	}
-	
 	/**
 	 * Tells when the item at the front of the queue (currently being processed)
 	 * will finish its processing and leave the simulation. If the queue is empty,

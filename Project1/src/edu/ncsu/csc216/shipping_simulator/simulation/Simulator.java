@@ -82,14 +82,16 @@ public class Simulator {
 	 * @param numStations the number of shipment process stations in the simulation
 	 */
 	public Simulator(int numStations, int numShipments) {
+		this.numShipments = numShipments;
+		this.numStations = numStations;
 		if (numShipments > 0 && numStations >= MIN_NUM_STATIONS && numStations <= MAX_NUM_STATIONS) {
 			myLog = new Log();
-			theBelt = new ConveyorBelt(numShipments, station);
-			myCalendar = new EventCalendar(station, theBelt);
 			station = new ShipmentProcessStation[numStations];
 				for (int i = 0; i < station.length; i++) {
 					station[i] = new ShipmentProcessStation(myLog);
 				}
+			theBelt = new ConveyorBelt(numShipments, station);
+			myCalendar = new EventCalendar(station, theBelt);	
 		}
 		else if (numShipments < 0 || numStations < MIN_NUM_STATIONS || numStations > MAX_NUM_STATIONS) {
 			throw new IllegalArgumentException();
@@ -101,6 +103,9 @@ public class Simulator {
 	 */
 	public void step() {
 		currentShipment = null;
+		if (myCalendar.nextToBeProcessed() == null) {
+			throw new IllegalStateException();
+		}
 		chosenItem = myCalendar.nextToBeProcessed();
 		currentShipment = chosenItem.processNext();
 		stepsTaken++;

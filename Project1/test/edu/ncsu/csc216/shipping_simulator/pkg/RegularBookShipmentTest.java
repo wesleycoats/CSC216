@@ -33,9 +33,10 @@ public class RegularBookShipmentTest {
 		log = new Log();
 		bookpack1 = new RegularBookShipment(1, 15);
 		station = new ShipmentProcessStation[3];
-		for (int i = 0, i < station.length; i++) {
+		for (int i = 0; i < station.length; i++) {
 			station[i] = new ShipmentProcessStation(log);
-	}
+		}
+	}	
 
 	/**
 	 * Test method for {@link edu.ncsu.csc216.shipping_simulator.pkg.RegularBookShipment#getInLine()}.
@@ -61,7 +62,7 @@ public class RegularBookShipmentTest {
 	@Test
 	public void testRegularBookShipment() {
 		fail("Not yet implemented");
-	}	
+	}
 
 	/**
 	 * Test method for {@link edu.ncsu.csc216.shipping_simulator.pkg.ItemToShip#ItemToShip(int, int)}.
